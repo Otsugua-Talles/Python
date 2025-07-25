@@ -8,6 +8,7 @@ numero_tentativas = 0
 print('!!! JOGO DE ADVINHA !!!')
 print('Tente advinhar a palavra')
 print('\r')
+
 while True:
     letra_digitada = input('Digite uma letra (maiúsculo): ')
     numero_tentativas += 1
