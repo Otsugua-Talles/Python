@@ -2,6 +2,7 @@ espaco = ' ' * 5
 
 print(f'{espaco}Calculadora Python{espaco}')
 print('\r')
+
 while True:
     primeiro_numero = input('Digite um número: ')
     segundo_numero = input('Digite outro número: ')
