@@ -49,3 +49,4 @@ atualizar_relogio()
 
 # Mantém a janela aberta
 janela.mainloop()
+
