@@ -36,4 +36,5 @@ if not st.session_state.clicou_sim:
 # Simula o botão fugindo com posições aleatórias
 if not st.session_state.clicou_sim:
     if col2.button("Não", key="nao"):
-        st.warning("Ops! Não consegue clicar aqui 😎")
+        st.warning("Resposta errada!!!")
+
