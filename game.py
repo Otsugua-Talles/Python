@@ -1,3 +1,9 @@
+# ============================================
+# 🐍 Snake Game by Talles Rodrigues
+# Desenvolvido em Python + Tkinter
+# Versão: 2.1 (com reinício e saída)
+# ============================================
+
 import tkinter as tk
 import random
 
@@ -79,21 +85,39 @@ class Jogo:
         self.canvas = tk.Canvas(root, width=LARGURA, height=ALTURA, bg="black")
         self.canvas.pack()
 
+        self.label_score = tk.Label(root, text="", font=("Arial", 14), bg="black", fg="white")
+        self.label_score.pack()
+
+        self.botao_frame = tk.Frame(root, bg="black")
+        self.botao_frame.pack()
+
+        self.botao_reiniciar = tk.Button(self.botao_frame, text="🔄 Jogar Novamente", font=("Arial", 12), command=self.reiniciar)
+        self.botao_sair = tk.Button(self.botao_frame, text="❌ Sair", font=("Arial", 12), command=root.destroy)
+
+        self.iniciar_jogo()
+
+    def iniciar_jogo(self):
+        # Limpa o canvas e estado
+        self.canvas.delete("all")
+        self.botao_reiniciar.pack_forget()
+        self.botao_sair.pack_forget()
+
+        # Reinicia objetos e variáveis
         self.cobra = Cobra(self.canvas)
         self.comida = Comida(self.canvas)
         self.pontuacao = 0
         self.velocidade = VEL_INICIAL
+        self.jogo_ativo = True
 
-        # Label de pontuação
-        self.label_score = tk.Label(root, text=f"Pontuação: {self.pontuacao}", font=("Arial", 14), bg="black", fg="white")
-        self.label_score.pack()
+        self.label_score.config(text=f"Pontuação: {self.pontuacao}")
 
+        # Liga os controles
         self.root.bind("<Up>", lambda e: self.cobra.mudar_direcao("cima"))
         self.root.bind("<Down>", lambda e: self.cobra.mudar_direcao("baixo"))
         self.root.bind("<Left>", lambda e: self.cobra.mudar_direcao("esquerda"))
         self.root.bind("<Right>", lambda e: self.cobra.mudar_direcao("direita"))
 
-        self.jogo_ativo = True
+        # Inicia o loop principal
         self.jogo_loop()
 
     def jogo_loop(self):
@@ -102,7 +126,18 @@ class Jogo:
 
             if self.cobra.colisao():
                 self.jogo_ativo = False
-                self.canvas.create_text(LARGURA//2, ALTURA//2, text=f"Fim de Jogo 😢\nPontuação: {self.pontuacao}", fill="white", font=("Arial", 24))
+                self.canvas.create_text(
+                    LARGURA//2, ALTURA//2 - 20,
+                    text=f"Fim de Jogo 😢", fill="white", font=("Arial", 24)
+                )
+                self.canvas.create_text(
+                    LARGURA//2, ALTURA//2 + 20,
+                    text=f"Pontuação: {self.pontuacao}", fill="white", font=("Arial", 18)
+                )
+
+                # Mostra os botões
+                self.botao_reiniciar.pack(side="left", padx=10, pady=10)
+                self.botao_sair.pack(side="right", padx=10, pady=10)
                 return
 
             if self.cobra.cabeca() == self.comida.posicao:
@@ -110,10 +145,12 @@ class Jogo:
                 self.comida.reposicionar()
                 self.pontuacao += 10
                 self.label_score.config(text=f"Pontuação: {self.pontuacao}")
-                # Aumenta a velocidade
                 self.velocidade = max(50, self.velocidade - 5)
 
             self.root.after(self.velocidade, self.jogo_loop)
+
+    def reiniciar(self):
+        self.iniciar_jogo()
 
 # ==== EXECUÇÃO ====
 if __name__ == "__main__":
